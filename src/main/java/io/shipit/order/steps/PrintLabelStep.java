@@ -8,16 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PrintLabelStep implements PipelineStep<OrderStepEnum> {
+public class PrintLabelStep implements PipelineStep<ProcessOrderContext> {
     private static final Logger logger = LoggerFactory.getLogger(PrintLabelStep.class);
 
     @Override
-    public OrderStepEnum getStepId() {
-        return OrderStepEnum.PRINT_LABEL;
+    public String getStepId() {
+        return OrderStepEnum.PRINT_LABEL.name();
     }
 
     @Override
-    public StepResult execute() {
+    public StepResult execute(ProcessOrderContext context) {
         logger.info("Printing label");
 
         Utils.sleepForOneSecond();

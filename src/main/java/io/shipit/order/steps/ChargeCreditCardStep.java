@@ -8,16 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ChargeCreditCardStep implements PipelineStep<OrderStepEnum> {
+public class ChargeCreditCardStep implements PipelineStep<ProcessOrderContext> {
     private static final Logger logger = LoggerFactory.getLogger(ChargeCreditCardStep.class);
 
     @Override
-    public OrderStepEnum getStepId() {
-        return OrderStepEnum.CHARGE_CREDIT_CARD;
+    public String getStepId() {
+        return OrderStepEnum.CHARGE_CREDIT_CARD.name();
     }
 
     @Override
-    public StepResult execute() {
+    public StepResult execute(ProcessOrderContext context) {
         logger.info("Charging credit card");
 
         Utils.sleepForOneSecond();

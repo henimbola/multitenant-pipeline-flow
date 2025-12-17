@@ -8,16 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateStockStep implements PipelineStep<OrderStepEnum> {
+public class ValidateStockStep implements PipelineStep<ProcessOrderContext> {
     private static final Logger logger = LoggerFactory.getLogger(ValidateStockStep.class);
 
     @Override
-    public OrderStepEnum getStepId() {
-        return OrderStepEnum.VALIDATE_STOCK;
+    public String getStepId() {
+        return OrderStepEnum.VALIDATE_STOCK.name();
     }
 
     @Override
-    public StepResult execute() {
+    public StepResult execute(ProcessOrderContext context) {
         logger.info("Validating stock");
 
         Utils.sleepForOneSecond();

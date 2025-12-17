@@ -7,9 +7,9 @@ import java.util.List;
 @Component
 public class PipelineExecutor {
 
-    public <T> void execute(List<PipelineStep<T>> steps) {
-        for (PipelineStep<T> step : steps) {
-            step.execute();
+    public <C extends PipelineContext> void execute(List<PipelineStep<C>> steps, C ctx) {
+        for (PipelineStep<C> step : steps) {
+            step.execute(ctx);
         }
     }
 }

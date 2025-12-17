@@ -4,7 +4,7 @@ import io.shipit.config.PipelineConfigRepository;
 import io.shipit.config.PipelineConfiguration;
 import io.shipit.core.PipelineExecutor;
 import io.shipit.core.PipelineStep;
-import io.shipit.order.steps.OrderStepEnum;
+import io.shipit.order.steps.ProcessOrderContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,11 +19,12 @@ public class OrderJobEngineService {
 
     private final PipelineExecutor pipelineExecutor;
     private final PipelineConfigRepository pipelineConfigRepository;
-    private final Map<OrderStepEnum, PipelineStep<OrderStepEnum>> pipelineStepsRegistry;
+    private final Map<String, PipelineStep<ProcessOrderContext>> pipelineStepsRegistry;
 
-    public OrderJobEngineService(PipelineExecutor pipelineExecutor, PipelineConfigRepository pipelineConfigRepository, List<PipelineStep<OrderStepEnum>> steps) {
+    public OrderJobEngineService(PipelineExecutor pipelineExecutor, PipelineConfigRepository pipelineConfigRepository, List<PipelineStep<ProcessOrderContext>> steps) {
         this.pipelineExecutor = pipelineExecutor;
         this.pipelineConfigRepository = pipelineConfigRepository;
+
         this.pipelineStepsRegistry = steps.stream().collect(Collectors.toUnmodifiableMap(
                 PipelineStep::getStepId,
                 Function.identity(),
@@ -41,8 +42,9 @@ public class OrderJobEngineService {
         pipelineExecutor.execute(
                 pipelineConfig
                     .stream()
-                    .map(config -> pipelineStepsRegistry.get(OrderStepEnum.valueOf(config.stepId())))
-                    .toList()
+                    .map(config -> pipelineStepsRegistry.get(config.stepId()))
+                    .toList(),
+                new ProcessOrderContext()
        );
 
         logger.info("Order Job Completed");
